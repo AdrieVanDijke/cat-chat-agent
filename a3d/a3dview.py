@@ -12,6 +12,9 @@ class A3DGUI:
             st.session_state['var'] = 0
         if 'naam' not in st.session_state:
             st.session_state['naam'] = ''
+        # Initialize chat history
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
 
     def start(self): 
         # haal data uit de url =================
@@ -27,34 +30,38 @@ class A3DGUI:
 
     # Bouw GUI op ========================================================
     def build_gui(self):
-        st.subheader("🤖 Vraag & Antwoord 🛠️ Training ⚙️")
-        with st.form('my_form'):
-            with st.expander("🎈: **Lees mij:** Gebruiksaanwijzingen & Achtergrondinformatie"):
-                st.write(self.a3dtekst.get_intro_tekst())
-            text = st.text_area('Stel hier je vraag:', '')
-            submitted = st.form_submit_button('Versturen')
-            if submitted:               
-                self.send_question(text)
+        st.subheader("🤖 Chat met CATja *- onze AI-bot*")
+        with st.expander("ℹ️ Disclaimer"):
+            st.write(self.a3dtekst.get_intro_tekst())
+             
+        # Display chat messages from history on app rerun
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+       
+        # React to user input
+        if prompt := st.chat_input("What is up?"):
+            
+            # Display user message in chat message container
+            st.chat_message("user").markdown(prompt)
+            preloader = st.empty()
+            # Add user message to chat history
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            preloader.text("🕵️ Een moment geduld a.u.b...")
+
+            response = self.a3dcon.ask_the_database(prompt)
+            preloader.empty()
+
+            # Display assistant response in chat message container
+            with st.chat_message("assistant"):
+                st.markdown(response)
+            # Add assistant response to chat history
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
     # Workers =============================================================
     # Callbacks ====================================
-    def send_question(self, user_question):
-        # placeholder voor de loader 
-        preloader = st.empty()   
-        preloader.text("🕵️ Een moment geduld a.u.b...")  
-        antwoord = self.a3dcon.ask_the_database(user_question)       
-        if antwoord == 'NOPE':
-            st.write("ℹ️: Geen antwoord gevonden in de database 🕵️ ...")  
-            antwoord2 = self.a3dcon.ask_model(user_question)
-            if antwoord2 == 'NOPE':                  
-                st.warning( self.a3dtekst.get_geen_ai_antwoord(user_question) )  
-                preloader.empty()
-            else:
-                st.info(f"💡**Antwoord Fine-tuned Model:** {antwoord2}")  
-                preloader.empty()        
-        else:
-            st.success(f"💡**Antwoord Database:** {antwoord}")
-            preloader.empty()
+       
+
 
 
 

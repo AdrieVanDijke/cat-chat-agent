@@ -33,12 +33,6 @@ class A3DControler:
         )
         result = qa.run(query)               
         return result
-
-    # vraag het de OpenAI API -> fine-tuned model ============
-    def ask_model(self, input_text):
-        llm_response = self.get_tuned_model(input_text)
-        response = llm_response.choices[0].message.content if hasattr(llm_response.choices[0].message, 'content') else ""
-        return response
            
     # WORKERS =====================================================================
     # maak en onderhoud verbinding met de Pinecone database ==
@@ -53,21 +47,11 @@ class A3DControler:
     # maak en onderhoud verbinding met de OpenAI API ==========
     @st.cache_resource
     def get_llm(_self):
-        llm = ChatOpenAI(model_name=_self.a3dmod.aimodel, temperature=_self.a3dmod.temperature, max_tokens=_self.a3dmod.max_tokens)
+        llm = ChatOpenAI(model_name=_self.a3dmod.aimodel, 
+                         temperature=_self.a3dmod.temperature, 
+                         max_tokens=_self.a3dmod.max_tokens
+                         )
         return llm
 
-    # Haal een getraind model op bij OpenAI ===================
-    def get_tuned_model(self, input_text):
-        system_prompt = self.a3dtekst.get_qa_system_prompt()
-        completion = client.chat.completions.create(       
-            model=self.a3dmod.finemodel,
-            temperature=self.a3dmod.fine_temperature,
-            max_tokens=self.a3dmod.fine_max_tokens,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": input_text}
-            ]
-        )
-        return completion
 
         
