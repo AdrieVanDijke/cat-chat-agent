@@ -14,17 +14,17 @@ class A3DGUI:
             st.session_state['naam'] = ''
         # Initialize chat history
         if "messages" not in st.session_state:
-            st.session_state.messages = []
+            st.session_state['messages'] = []
 
     def start(self): 
         # haal data uit de url =================
-        url = st.experimental_get_query_params()
+        url = st.query_params
         if url != {}:
             if 'var' in url:
-                var = url['var'][0]
+                var = url['var']
                 st.session_state['var'] = var                   
             if 'naam' in url:
-                naam = url['naam'][0]
+                naam = url['naam']
                 st.session_state['naam'] = naam                       
         self.build_gui()
 
@@ -39,9 +39,8 @@ class A3DGUI:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
        
-        # React to user input
-        if prompt := st.chat_input("What is up?"):
-            
+        # React to user input        
+        if prompt := st.chat_input("Voer hier je vraag in..."):            
             # Display user message in chat message container
             st.chat_message("user").markdown(prompt)
             preloader = st.empty()

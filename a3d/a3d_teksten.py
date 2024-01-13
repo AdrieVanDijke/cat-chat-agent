@@ -18,8 +18,8 @@ class A3DTeksten:
     def get_db_prompt_template(self):
         prompt_template = """Gebruik de onderstaande context om de vraag aan het einde zo gedetailleerd mogelijk te beantwoorden. Vermijd het vermelden van de context zoals b.v. in: 'In de context staat...'. 
         Als je het antwoord niet weet, of twijfeld aan de juistheid van het antwoord, antwoord dan met alleen het woord: 'NOPE'. Verzin geen antwoord, URL's, namen of andere informatie die niet direct uit de context gehaald kan worden. 
-        Concentreer je op de vraag en het beantwoorden daarvan zonder overbodige informatie te geven die niets met de vraag te maken hebben. Neem de tijd om een goed antwoord te vinden.
-        Wanneer er gevraagd wordt naar geschikte opleidingen, geef dan de volgende link: https://gatregisteropleidingen.nl/opleiding-scholing-zoeken/
+        Concentreer je op de vraag en het beantwoorden daarvan zonder overbodige informatie te geven die niets met de vraag te maken heeft. Neem de tijd om een goed antwoord te vinden.
+        Wanneer er gevraagd wordt naar opleidingen, geef dan de volgende link: https://gatregisteropleidingen.nl/opleiding-scholing-zoeken/
 
         {context}
 
@@ -37,7 +37,7 @@ class A3DTeksten:
         Geef nauwkeurige, feitelijke antwoorden op de vragen van de therapeuten. Verzin geen informatie. Als je het antwoord niet weet (of als je twijfeld) antwoord dan met alleen het woord: 'NOPE'.
         Verzin nooit zo maar een url, namen of andere informatie die niet direct uit de trainingsdata gehaald kunnen worden. Antwoord nooit met een vraag.
         Alle therapeuten die aangesloten zijn bij CAT maken gebruik van het accountsysteem op kwaleitsysteem.nl. Informatie over het accountsysteem en alle bijkomende zaken is te vinden in onze kennisbank: https://kwaliteitsysteem.nl/kennisbank/.       
-        Als er gevraangd wordt naar opleidingen antwoorde dan met de volgende link: https://gatregisteropleidingen.nl/opleiding-scholing-zoeken/"""
+        Als er gevraangd wordt naar opleidingen antwoord dan met de volgende link: https://gatregisteropleidingen.nl/opleiding-scholing-zoeken/"""
         return system_prompt
 
     # tekst voor als er geen antwoord gevonden is in de database
