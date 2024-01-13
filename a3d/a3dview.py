@@ -1,12 +1,12 @@
 from a3d.a3dmodel import A3DModel
-from a3d.a3dcontroler import A3DControler
+import a3d.a3dcontroler as a3dcon
 from a3d.a3d_teksten import A3DTeksten
 import streamlit as st
 
 class A3DGUI:
     def __init__(self):
         self.a3dmod = A3DModel()
-        self.a3dcon = A3DControler(self.a3dmod)
+        #self.a3dcon = a3dcon.A3DControler(self.a3dmod)
         self.a3dtekst = A3DTeksten()
         if 'var' not in st.session_state:
             st.session_state['var'] = 0
@@ -48,8 +48,17 @@ class A3DGUI:
             st.session_state.messages.append({"role": "user", "content": prompt})
             preloader.text("🕵️ Een moment geduld a.u.b...")
 
-            response = self.a3dcon.ask_the_database(prompt)
+
+
+            response = a3dcon.agent.process_query(prompt)
+
+            #response = self.a3dcon.ask_the_database(prompt)
+            print(response)
             preloader.empty()
+
+
+
+
 
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
